@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tree } from './Tree';
+import { TreeDto } from './TreeDto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class TreeService {
     return this.http.get(this.baseUrl+'Tree');
   }
 
-  GetChildrenByParentId(ParentId:number){
-    return this.http.get(this.baseUrl+'Tree/GetChildrenByParentId?id='+ParentId);
+  GetChildrenByParentId(ParentId:number):Observable<TreeDto[]>{
+    return this.http.get<TreeDto[]>(this.baseUrl+'Tree/GetChildrenByParentId?id='+ParentId);
   }
 
   HaveChildrenByParentId(ParentId:number){

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TreeService } from './test.service';
 import { Tree } from './Tree';
+import { TreeDto } from './TreeDto';
 
 @Component({
   selector: 'app-test',
@@ -11,7 +12,8 @@ import { Tree } from './Tree';
 export class TestComponent implements OnInit {
 
    AllParent:Tree[]=[] ;
-   AllDisplayedParent:Tree[] = [];
+   AllChildren:TreeDto[]=[];
+   AllChildren2:TreeDto[]=[];
   constructor(private service:TreeService) {
 
 
@@ -25,8 +27,18 @@ export class TestComponent implements OnInit {
 
   }
 
+  GetChildrenByParentId(id:number){
+    this.service.GetChildrenByParentId(id).subscribe((a:any) =>{
+      this.AllChildren = a;
+    },error => {
+      console.log(error);
+    }, () => {
+      for (let index = 0; index < this.AllChildren.length; index++) {
+        this.AllChildren2.push(this.AllChildren[index]);
 
-
+      }
+    })
+  }
 
 
 }

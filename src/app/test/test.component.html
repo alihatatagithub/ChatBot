@@ -1,7 +1,24 @@
 
-<h1>hhh</h1>
 <div class="row">
-  <button style="background-color: blue;" class="col-md" *ngFor="let item of AllParent">
-  {{item.name}}
-  </button>
+  برجاء إختيار
+  <div  class="col-md" *ngFor="let item of AllParent">
+    <button class="btn btn-primary" (click)="GetChildrenByParentId(item.id)">
+      {{item.name}}
+
+    </button>
+  </div>
 </div>
+
+<div class="row">
+  برجاء إختيار
+  <div  class="col-md" *ngFor="let item of AllChildren2">
+    <button *ngIf="item.hasChildren" class="btn btn-primary" (click)="GetChildrenByParentId(item.id)">
+      {{item.name}}
+    </button>
+    <p *ngIf="!item.hasChildren">
+      {{item.name}}
+    </p>
+  </div>
+  <br>
+</div>
+

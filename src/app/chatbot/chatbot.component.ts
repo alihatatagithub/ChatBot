@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Message } from '../Message';
-import { ChatbotService } from './chatbot.service';
+import { TreeService } from '../test/test.service';
+import { Tree } from '../test/Tree';
+import { TreeDto } from '../test/TreeDto';
+import { TreeVM } from '../test/TreeVM';
 
 @Component({
   selector: 'app-chatbot',
@@ -11,41 +13,57 @@ import { ChatbotService } from './chatbot.service';
 export class ChatbotComponent implements OnInit {
   @ViewChild('scroll', { static: true }) scroll: any;
 
-  Answers:Message[]=[];
-  chat:Message = new Message('user','Human Or Chat',1,false,true,0,'',['Human','Chat']);
-  chat2:Message = new Message('bot','Human',2,true,true,1,'',['Man','Woman']);
-  chat3:Message = new Message('user','Chat',3,true,true,1,'',['Chat1','Chat2']);
+  AllParent:Tree[]=[] ;
+  // model:TreeDto = new TreeDto();
+  TreeVMS:TreeVM[] = [];
+  TreeVm:TreeVM = new TreeVM();
+  AllChildren:TreeDto[]=[];
+  AllChildren2:TreeDto[]=[];
+ constructor(private service:TreeService) {
 
 
-  constructor(public chatService: ChatbotService) {
-
-    this.Answers.push(this.chat);
-
-    this.Answers.push(this.chat2);
+ }
 
 
-    this.Answers.push(this.chat3);
+ ngOnInit(): void {
+   this.service.GetAllParents().subscribe((a :any )=> {
+     this.AllParent = a;
+    },error => {
+      console.log(error);
+    }, ()=>{
+      // for (let index = 0; index < this.AllParent.length; index++) {
+      //   var model = new TreeDto();
+      //   model.id = this.AllParent[index].id;
+      //   model.hasChildren = true;
+      //   model.name = this.AllParent[index].name;
+      //   model.parentId = undefined;
+      //  this.AllChildren2.push(model) ;
+
+
+      // }
+    })
+
+ }
+
+ GetChildrenByParentId(id:number,name:string){
+  for (let index = 0; index < this.TreeVm.TreeDto.length; index++) {
+    this.TreeVm.TreeDto.splice(index,index+1);
+
   }
+   this.service.GetChildrenByParentId(id).subscribe((a:any) =>{
+     this.AllChildren = a;
+   },error => {
+     console.log(error);
+   }, () => {
+     for (let index = 0; index < this.AllChildren.length; index++) {
+      //  this.AllChildren2.push(this.AllChildren[index]);
+       this.TreeVm.TreeDto.push(this.AllChildren[index]);
+     }
+     this.TreeVm.Selected.push(name);
 
-
-  messages: Message[] = [];
-  value: string = '';
-  select:string='';
-
-
-  ngOnInit(): void {
-    this.chatService.conversation.subscribe((val) => {
-      this.messages = this.messages.concat(val);
-    });
-
-  }
-
-  sendMessage(subitem:string) {
-    console.log('hi'+subitem)
-    this.value = subitem;
-    this.chatService.getBotAnswer(this.value);
-    this.value = '';
-  }
+     this.TreeVMS.push(this.TreeVm);
+   })
+ }
 
   // ngAfterViewChecked(): void {
 

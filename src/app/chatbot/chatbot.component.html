@@ -1,69 +1,64 @@
-  <div  class="chat-box">
-
-
-      <div class="chat-box-header">
-          <h3>Message Us</h3>
-          <p>
-            <i class="fa fa-times"></i>
-          </p>
-      </div>
-
-      <div class="chat-box-body" *ngFor="let item of Answers">
-        <div *ngIf="item.HasChildren && item.HasParent == false" class="chat-box-body-send">
-          <div class="parent" >
-            <div class="child" *ngIf="item.HasChildren">
-              <div class="parent">
-                {{item.content}}
-
-              </div>
-              <br>
-              <button (click)="sendMessage(subitem)" class="btn btn-primary" *ngFor="let subitem of item.ChildName">
-                {{subitem}}
-              </button>
-            </div>
-          </div>
-          <span>12:00</span>
-
-        </div>
+<div  class="chat-box">
+  <div class="chat-box-header">
+      <h3>Message Us</h3>
+      <p>
+        <i class="fa fa-times"></i>
+      </p>
+  </div>
+  <div class="chat-box-body">
+    <div class="chat-box-body-send">
+      <p>ماذا تريد</p>
+      <span>12:00</span>
 
     </div>
+    <br>
 
-    <ng-container *ngFor="let message of Answers">
-      <div class="message" [ngClass]="{from: message.author === 'bot',to: message.author === 'user'}">
-        {{ message.content }}
+    <div class="chat-box-body-receive">
+      <p  class="col-md" *ngFor="let parent of AllParent">
+        <button class="btn btn-light" (click)="GetChildrenByParentId(parent.id,parent.name)">
+          {{parent.name}}
+
+        </button>
+      </p>
+    </div>
+
+
+    <div *ngFor="let item of TreeVMS">
+      <div class="chat-box-body-send">
+        <p *ngFor="let child1 of item.Selected">{{child1}}</p>
+        <span>12:00</span>
+
       </div>
-    </ng-container>
 
-<!--
-<select [(ngModel)]="select" (change)="sendMessage()">
-  <option selected disabled>Please Select </option>
-  <option value="1">ChatBot</option>
-  <option value="2" >Contact with admin</option>
-</select>
-<ng-container *ngFor="let message of messages">
-  <div class="message" [ngClass]="{from: message.author === 'bot',to: message.author === 'user'}">
-    {{ message.content }}
-  </div>
-</ng-container>
-<label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Chat Bot</label>
-<input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text" />
-<button (click)="sendMessage()">Send</button>
-<ng-template #dialogInfo>
-  <span [className]="'float-right'">Total messages: {{ messages.length }}</span>
-</ng-template>
 
-      <div class="chat-box-footer">
-          <button id="addExtra">
-            <i class="fa fa-plus"></i>
+      <div class="chat-box-body-receive" >
+        <div *ngFor="let child of item.TreeDto">
+          <button *ngIf="child.hasChildren" class="btn btn-light" (click)="GetChildrenByParentId(child.id,child.name)">
+            {{child.name}}
           </button>
-          <input placeholder="Enter Your Message" type="text">
-          <i class="send far fa-paper-plane"></i>
+          <p *ngIf="!child.hasChildren">
+            {{child.name}}
+          </p>
+        </div>
       </div>
-    </div> -->
+    </div>
 
 
 
 
+  </div>
 
 
+
+<div class="chat-button">
+  <span></span>
+</div>
+
+
+<div class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h1>Add What you want here.</h1>
+        </div>
+    </div>
 
