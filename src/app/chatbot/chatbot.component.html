@@ -23,7 +23,7 @@
     </div>
 
 
-    <div *ngFor="let item of TreeVMS">
+    <div *ngFor="let item of TreeVMS" >
       <div class="chat-box-body-send">
         <p *ngFor="let child1 of item.Selected">{{child1}}</p>
         <span>12:00</span>
@@ -31,7 +31,7 @@
       </div>
 
 
-      <div class="chat-box-body-receive" >
+      <div class="chat-box-body-receive" id="scroll">
         <div *ngFor="let child of item.TreeDto">
           <button *ngIf="child.hasChildren" class="btn btn-light" (click)="GetChildrenByParentId(child.id,child.name)">
             {{child.name}}
